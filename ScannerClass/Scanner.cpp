@@ -31,9 +31,6 @@ Scanner::Scanner(const char *strPtr) {
 		textBuffer[f] = strPtr[f];
 	}
 	lookaheadPlace = textBuffer;
-	printf("this runs\n");
-
-
 }
 
 int Scanner::filter() {

@@ -11,7 +11,6 @@
 
 void Parser::parse() {
 	tk = scanner.scanToken();
-	printf("tk.tokenID: %d\ntk.lexeme: %s\ntk.lineNum %d\n", tk.tokenID, tk.lexeme, tk.lineNum);
 	program();
 	if (tk.tokenID != EOFTK) {
 		printf("ERROR\n");
@@ -33,7 +32,7 @@ void Parser::program() {
 			errorHandler("go lexeme");
 		}
 	} else {
-		errorHandler("KEYWORDTk");
+		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
 	vars();
 	block();
@@ -64,26 +63,26 @@ void Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 			if(tk.tokenID == IDTK) {
 				tk = scanner.scanToken();
 			} else {
-				errorHandler(tokenNames[tk.tokenID - 1000]);
+				errorHandler(tokenNames[IDTK - 1000]);
 			}
-			if(strcmp(tk.lexeme, "=") == 0) {
+			if(tk.tokenID == ASSIGNOPTK) {
 				tk = scanner.scanToken();
 			}
 			else {
-				errorHandler(tokenNames[tk.tokenID - 1000]);
+				errorHandler(tokenNames[ASSIGNOPTK - 1000]);
 			}
 			if(tk.tokenID == NUMTK) {
 				tk = scanner.scanToken();
 			}
 			else {
-				errorHandler(tokenNames[tk.tokenID - 1000]);
+				errorHandler(tokenNames[NUMTK - 1000]);
 			}
 			varList();
 			if(tk.tokenID == DELOPTK) {
 				tk = scanner.scanToken();
 			}
 			else {
-				errorHandler(tokenNames[tk.tokenID - 1000]);
+				errorHandler(tokenNames[DELOPTK - 1000]);
 			}
 		}
 		return; // for the empty case
@@ -98,14 +97,14 @@ void Parser::varList() {
 		if(tk.tokenID == ASSIGNOPTK) {
 			tk = scanner.scanToken();
 		} else {
-			errorHandler(tokenNames[tk.tokenID - 1000]);
+			errorHandler(tokenNames[ASSIGNOPTK - 1000]);
 		}
 		if(tk.tokenID == NUMTK) {
 			tk = scanner.scanToken();
 			varList();
 			return;
 		} else {
-			errorHandler(tokenNames[tk.tokenID - 1000]);
+			errorHandler(tokenNames[NUMTK - 1000]);
 		}
 	} else {
 		return;
@@ -119,8 +118,11 @@ void Parser::block() {
 		stats();
 		if(tk.tokenID == RGHTCURLYDELIM) {
 			tk = scanner.scanToken();
+		} else {
+			errorHandler(tokenNames[RGHTCURLYDELIM - 1000]);
 		}
-		
+	} else {
+		errorHandler(tokenNames[LFTCURLYDELIM - 1000]);
 	}
 }
 
@@ -196,18 +198,18 @@ void Parser::read() {
 			tk = scanner.scanToken();
 
 		} else {
-			errorHandler(tokenNames[tk.tokenID - 1000]);
+			errorHandler(tokenNames[IDTK - 1000]);
 		}
 		if(tk.tokenID == DELOPTK) {
 			tk = scanner.scanToken();
 			return;
 		} else {
-			errorHandler(tokenNames[tk.tokenID - 1000]);
+			errorHandler(tokenNames[DELOPTK - 1000]);
 		}
 
 
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
 }
 
@@ -224,13 +226,13 @@ void Parser::print() {
 			errorHandler("output");
 		}	
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
 	if(tk.tokenID == DELOPTK) {
 		tk = scanner.scanToken();
 		return;
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[DELOPTK - 1000]);
 	}
 
 }
@@ -245,13 +247,13 @@ void Parser::cond() {
 			errorHandler("cond");
 		}
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
 
 	if(tk.tokenID == LFTSQREDELIM) {
 		tk = scanner.scanToken();
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[LFTSQREDELIM - 1000]);
 	}
 
 	if(tk.tokenID == IDTK) {
@@ -259,7 +261,7 @@ void Parser::cond() {
 		relational();
 		exp();
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[IDTK - 1000]);
 	}
 
 	if(tk.tokenID == RGHTSQREDELIM) {
@@ -267,7 +269,7 @@ void Parser::cond() {
 		stat();
 		return;
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[RGHTSQREDELIM - 1000]);
 	}
 
 
@@ -283,26 +285,26 @@ void Parser::loop() {
 			errorHandler("loop");
 		}
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
 	if(tk.tokenID == LFTSQREDELIM) {
 		tk = scanner.scanToken();
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[LFTSQREDELIM - 1000]);
 	}
 	if(tk.tokenID == IDTK) {
 		tk = scanner.scanToken();
 		relational();
 		exp();
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[IDTK - 1000]);
 	}
 	if(tk.tokenID == RGHTSQREDELIM) {
 		tk = scanner.scanToken();
 		stat();
 		return;
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[RGHTSQREDELIM - 1000]);
 	}
 
 
@@ -319,26 +321,26 @@ void Parser::assign() {
 			errorHandler("set");
 		}
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
 
 	if(tk.tokenID = IDTK) {
 		tk = scanner.scanToken();
 	} else {
-			errorHandler(tokenNames[tk.tokenID - 1000]);
+			errorHandler(tokenNames[IDTK - 1000]);
 	}
 
 	if(tk.tokenID = ASSIGNOPTK) {
 		tk = scanner.scanToken();
 		exp();
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[ASSIGNOPTK - 1000]);
 	}
 	if(tk.tokenID = DELOPTK) {
 		tk = scanner.scanToken();
 		return;
 	} else {
-		errorHandler(tokenNames[tk.tokenID - 1000]);
+		errorHandler(tokenNames[DELOPTK - 1000]);
 	}
 
 
@@ -365,7 +367,7 @@ void Parser::relational() {
 			tk = scanner.scanToken();
 			return;
 		} else {
-			errorHandler(tokenNames[tk.tokenID - 1000]);
+			errorHandler(tokenNames[ASSIGNOPTK - 1000]);
 		}
 	} else {
 		errorHandler("Any relational token");
@@ -375,13 +377,17 @@ void Parser::relational() {
 void Parser::exp() {
 	m();
 	if(tk.tokenID == DBLESTAR) {
+		printf("EXP: took M ** <EXP> Opt\n");
 		tk = scanner.scanToken();
 		exp();
 		return;
 	} else if (tk.tokenID == DBLESLASH) {
+		printf("EXP: took M // <EXP> Opt\n");
+		tk = scanner.scanToken();
 		exp();
 		return;
 	} else {
+		printf("EXP: took <M> opt\n");
 		return;
 	}
 }
@@ -389,15 +395,18 @@ void Parser::exp() {
 
 void Parser::m() {
 	n();
+	printf("M: n just ran\n");
 	if(tk.tokenID == OPTK) {
 		if(strcmp(tk.lexeme, "+") == 0) {
+			printf("M: N+M opt took\n");
 			tk = scanner.scanToken();
 			m();
 			return;
 		} else {
-			errorHandler("+");
+			return; // In case M -> N opt
 		}
 	} else {
+		printf("M: Took the Lone N Opt\n");
 		return;
 	}
 }
@@ -406,23 +415,27 @@ void Parser::m() {
 void Parser::n() {
 	if(tk.tokenID == OPTK) {
 		if(strcmp(tk.lexeme, "-") == 0) {
+			printf("N: took -N opt\n");
 			tk = scanner.scanToken();
 			n();
 			return;
-		} else {
-			errorHandler("-");
-		}
-	} else {
-		r();
-		if(tk.tokenID == OPTK) {
-			if(strcmp(tk.lexeme, "-") == 0) {
-				tk = scanner.scanToken();
-				n();
-			}
+		}	
+	}
+	r();
+	printf("N: Just ran R\n");
+	if(tk.tokenID == OPTK) {
+		if(strcmp(tk.lexeme, "-") == 0) {
+			printf("N: took R-N Opt\n");
+			tk = scanner.scanToken();
+			n();
 		} else {
 			return; // In case N -> R option
 		}
+	} else {
+		printf("N: Took Lone R Opt\n");
+		return; // In case N -> R option
 	}
+	
 }
 
 void Parser::r() {
@@ -433,12 +446,14 @@ void Parser::r() {
 			tk = scanner.scanToken();
 			return;
 		} else {
-			errorHandler(tokenNames[tk.tokenID - 1000]);
+			errorHandler(tokenNames[RGHTPARENDELIM - 1000]);
 		}
 	} else if(tk.tokenID == IDTK) {
+		printf("R: took ID opt\n");
 		tk = scanner.scanToken();
 		return;
 	} else if(tk.tokenID == NUMTK) {
+		printf("R: took NumOpt\n");
 		tk = scanner.scanToken();
 		return;
 	} else {

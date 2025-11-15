@@ -58,15 +58,7 @@ int main(int argc, char* argv[]) {
 		}
 	
 	}
-
-	Scanner scannerObj(textBuffer);
-	Token tk;
-	while(tk.tokenID != EOFTK) {
-		tk = scannerObj.scanToken();
-		printf("Group=%s instance=%s Line=%d\n", tokenNames[tk.tokenID - 1000], tk.lexeme, tk.lineNum);
-	}
-
-
+	
 	Parser parserObj(textBuffer);
 	parserObj.parse();
 
