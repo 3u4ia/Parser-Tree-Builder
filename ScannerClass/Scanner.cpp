@@ -25,12 +25,15 @@ enum CharacterType {
 
 
 Scanner::Scanner(const char *strPtr) {
-	int i = 0;
-	int len = strlen(strPtr);
-	for(; i <= len; i++) {   // <= because i want to include the \0 or EOF
-		textBuffer[i] = strPtr[i];
-	}	
+	int f = 0;
+	int lenf = strlen(strPtr);
+	for(; f <= lenf; f++) {   // <= because f want to include the \0 or EOF
+		textBuffer[f] = strPtr[f];
+	}
 	lookaheadPlace = textBuffer;
+	printf("this runs\n");
+
+
 }
 
 int Scanner::filter() {
@@ -154,6 +157,7 @@ Token Scanner::scanToken() {
 	Token t;
 	t.lineNum = lineCount;
 	t.tokenID = EOFTK;
+	printf("Final only option EOFTK\n\n");
 	return t;	
 }
 
@@ -265,8 +269,10 @@ static Token finalCase(int state, char *lexeme, int lineNumber) {
 			return token;
 		case EOFTK:
 			token.tokenID = EOFTK;
+			printf("GOT EOF TK\n\n");
 			return token;
 	}
+	printf("ONLY EOFTK LEFT\n\n");
 	token.tokenID = EOFTK;
 	return token;
 }

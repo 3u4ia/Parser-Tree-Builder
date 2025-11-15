@@ -29,9 +29,9 @@ enum TokenID {
 
 
 struct Token {
-	TokenID tokenID;
-	char lexeme[9];
-	int lineNum;
+	TokenID tokenID = IDTK;
+	char lexeme[9] = {0};
+	int lineNum = 0;
 };
 
 

@@ -34,6 +34,9 @@ class Parser {
 
 	public:
 		Parser(const char *textBuffer): scanner(textBuffer) {
+			printf("%s\n", textBuffer);
+			printf("%p\n", textBuffer);
+			printf("This doesn't run\n");
 		}
 
 		void parse();

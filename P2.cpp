@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <vector>
 #include "ScannerClass/Scanner.h"
+#include "Parser/Parser.h"
 
 
 bool getInput(char [], char **, char *argv[], int);
@@ -53,18 +54,10 @@ int main(int argc, char* argv[]) {
 
 			// The actual read
 			size_t bytesRead = fread(textBuffer, 1, sizeof(textBuffer), file);
-			textBuffer[bytesRead] = '\0'; // null terminating so it's a proper c string
-			// WHERE THE SCANNER WILL BE PLACED
-			
-			// send file to class
-			// 	class will have scanner().
-			// 		inside scanner() there will be a filter() that filters out whitespace
-			// You will retrieve token of type {tokenId, tokenInstance: reference to a string table, line#
-
+			textBuffer[bytesRead] = '\0'; // null terminating so it's a proper c string	
 		}
 	
 	}
-
 
 	Scanner scannerObj(textBuffer);
 	Token tk;
@@ -73,6 +66,11 @@ int main(int argc, char* argv[]) {
 		printf("Group=%s instance=%s Line=%d\n", tokenNames[tk.tokenID - 1000], tk.lexeme, tk.lineNum);
 	}
 
+
+	Parser parserObj(textBuffer);
+	parserObj.parse();
+
+	
 	
 
 	
