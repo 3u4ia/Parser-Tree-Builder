@@ -3,7 +3,9 @@
 
 #include <stdio.h>
 #include "../TokensAndStates/TokensAndStates.h"
+#include "../TreeClass/TreeNodeStruct.h"
 #include "../ScannerClass/Scanner.h"
+
 
 using namespace std;
 

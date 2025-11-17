@@ -9,6 +9,37 @@
 //	int lineNum;
 //};
 
+
+//struct TreeNode {
+//	int label;
+//	Token token;
+//	TreeNode *left;
+//	TreeNode *middle;
+//	TreeNode *right;
+//};
+
+
+enum NonTerminals {
+	PROGRAM,
+	VARS,
+	VARLIST,
+	BLOCK,
+	STATS,
+	MSTAT,
+	STAT,
+	READ,
+	PRINT,
+	COND,
+	LOOP,
+	ASSIGN,
+	RELATIONAL,
+	EXP,
+	M,
+	N,
+	R
+}
+
+
 void Parser::parse() {
 	tk = scanner.scanToken();
 	program();
@@ -23,7 +54,29 @@ void Parser::parse() {
 }
 
 
+//struct TreeNode {
+//	int label;
+//	Token token;
+//	TreeNode *left;
+//	TreeNode *middle;
+//	TreeNode *right;
+//};
+//struct Token {
+//	TokenID tokenID;
+//	char lexeme[9];
+//	int lineNum;
+//};
+
+
 void Parser::program() {
+	TreeNode *programNode = new TreeNode;
+	programNode->label = PROGRAM;
+	programNode->token = tk;
+	programNode->left = nullptr;
+	programNode->middle = nullptr;
+	programNode->right = nullptr;
+
+
 	if (tk.tokenID == KEYWORD) {
 		if (strcmp(tk.lexeme, "go") == 0) {
 			tk = scanner.scanToken();
@@ -34,6 +87,7 @@ void Parser::program() {
 	} else {
 		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
+	programNode->left = vars();
 	vars();
 	block();
 	if(tk.tokenID == KEYWORD) {

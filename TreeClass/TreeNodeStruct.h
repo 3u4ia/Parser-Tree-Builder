@@ -1,0 +1,18 @@
+#ifndef TREENODESTRUCT_H 
+#define TREENODESTRUCT_H
+#include "../TokensAndStates/TokensAndStates.h"
+
+//struct Token {
+//	TokenID tokenID = IDTK;
+//	char lexeme[9] = {0};
+//	int lineNum = 0;
+//};
+
+struct TreeNode {
+	int label;
+	Token token;
+	TreeNode *left;
+	TreeNode *middle;
+	TreeNode *right;
+};
+#endif
