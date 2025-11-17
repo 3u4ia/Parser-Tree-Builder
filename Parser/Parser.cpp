@@ -54,19 +54,6 @@ void Parser::parse() {
 }
 
 
-//struct TreeNode {
-//	int label;
-//	Token token;
-//	TreeNode *left;
-//	TreeNode *middle;
-//	TreeNode *right;
-//};
-//struct Token {
-//	TokenID tokenID;
-//	char lexeme[9];
-//	int lineNum;
-//};
-
 
 void Parser::program() {
 	TreeNode *programNode = new TreeNode;
@@ -88,8 +75,7 @@ void Parser::program() {
 		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
 	programNode->left = vars();
-	vars();
-	block();
+	programNode->middle = block();
 	if(tk.tokenID == KEYWORD) {
 		if (strcmp(tk.lexeme, "exit") == 0) {
 			tk = scanner.scanToken();
@@ -109,8 +95,29 @@ void Parser::program() {
 //	char lexeme[9];
 //	int lineNum;
 //};
+//
+//struct TreeNode {
+//	int label;
+//	Token token;
+//	TreeNode *left;
+//	TreeNode *middle;
+//	TreeNode *right;
+//};
+//struct Token {
+//	TokenID tokenID;
+//	char lexeme[9];
+//	int lineNum;
+//};
+
+
 
 void Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
+	TreeNode varsNode = new TreeNode;
+	varsNode->label = VARS;
+	varsNode->token = tk;
+	varsNode->left = nullptr;
+	varsNode->middle = nullptr;
+	varsNode->right = nullptr;
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "int") == 0) {
 			tk = scanner.scanToken();
@@ -131,7 +138,7 @@ void Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 			else {
 				errorHandler(tokenNames[NUMTK - 1000]);
 			}
-			varList();
+			varsNode->left = varList();
 			if(tk.tokenID == DELOPTK) {
 				tk = scanner.scanToken();
 			}
@@ -145,6 +152,12 @@ void Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 }
 
 void Parser::varList() {
+	varListNode->label = VARLIST;
+	varListNode->token = tk;
+	varListNode->left = nullptr;
+	varListNode->middle = nullptr;
+	varListNode->right = nullptr;
+
 	if(tk.tokenID == IDTK) {
 		tk = scanner.scanToken();
 
@@ -155,7 +168,7 @@ void Parser::varList() {
 		}
 		if(tk.tokenID == NUMTK) {
 			tk = scanner.scanToken();
-			varList();
+			varListNode->left = varList();
 			return;
 		} else {
 			errorHandler(tokenNames[NUMTK - 1000]);
@@ -166,10 +179,16 @@ void Parser::varList() {
 }
 
 void Parser::block() {
+	blockNode->label = BLOCK;
+	blockNode->token = tk;
+	blockNode->left = nullptr;
+	blockNode->middle = nullptr;
+	blockNode->right = nullptr;
+
 	if (tk.tokenID == LFTCURLYDELIM) {
 		tk = scanner.scanToken();
-		vars();
-		stats();
+		blockNode->left = vars();
+		blockNOde->middle = stats();
 		if(tk.tokenID == RGHTCURLYDELIM) {
 			tk = scanner.scanToken();
 		} else {
@@ -181,11 +200,23 @@ void Parser::block() {
 }
 
 void Parser::stats() {
-	stat();
-	mStat();
+	statsNode->label = STATS;
+	statsNode->token = tk;
+	statsNode->left = nullptr;
+	statsNode->middle = nullptr;
+	statsNode->right = nullptr;
+
+	statsNode->left = stat();
+	statsNode->middle = mStat();
 }
 
 void Parser::mStat() {
+	mStatNode->label = MSTAT;
+	mStatNode->token = tk;
+	mStatNode->left = nullptr;
+	mStatNode->middle = nullptr;
+	mStatNode->right = nullptr;
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "scan") == 0 ||
 			strcmp(tk.lexeme, "output") == 0 ||
@@ -194,13 +225,13 @@ void Parser::mStat() {
 			strcmp(tk.lexeme, "set") == 0) {
 			
 
-			stat();
-			mStat();
+			mStatNode->left = stat();
+			mStatNode->middle = mStat();
 			return;
 		}
 	} else if(tk.tokenID == LFTCURLYDELIM) {
-		stat();
-		mStat();
+		mStatNode->left = stat();
+		mStatNode->middle = mStat();
 		return;
 	}
 
@@ -209,21 +240,27 @@ void Parser::mStat() {
 }
 
 void Parser::stat() {
+	statNode->label = STAT;
+	statNode->token = tk;
+	statNode->left = nullptr;
+	statNode->middle = nullptr;
+	statNode->right = nullptr;
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "scan") == 0) {
-			read();
+			statNode->left = read();
 			return;
 		} else if(strcmp(tk.lexeme, "output") == 0) {
-			print();
+			statNode->left = print();
 			return;
 		} else if(strcmp(tk.lexeme, "cond") == 0) {
-			cond();
+			statNode->left = cond();
 			return;
 		} else if(strcmp(tk.lexeme, "loop") == 0) {
-			loop();
+			statNode->left = loop();
 			return;
 		} else if(strcmp(tk.lexeme, "set") == 0) {
-			assign();
+			statNode->left = assign();
 			return;
 		} else {
 			errorHandler("scan, output, cond, loop or set");
@@ -231,7 +268,7 @@ void Parser::stat() {
 			
 	} 
 	else if(tk.tokenID == LFTCURLYDELIM) {
-		block();
+		statNode->left = block();
 		return;
 	}
 	else {
@@ -242,6 +279,12 @@ void Parser::stat() {
 }
 
 void Parser::read() {
+	readNode->label = READ;
+	readNode->token = tk;
+	readNode->left = nullptr;
+	readNode->middle = nullptr;
+	readNode->right = nullptr;
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "scan") == 0) {
 			tk = scanner.scanToken();

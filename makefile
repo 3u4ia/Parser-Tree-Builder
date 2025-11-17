@@ -31,3 +31,6 @@ $(OBJS4): $(PRSRCLASS)/Parser.cpp $(PRSRCLASS)/Parser.h TokensAndStates/TokensAn
 
 clean:
 	/bin/rm -f *.o ./ScannerClass/*.o ./TokensAndStates/*.o ./Parser/*.o $(TARGET)
+
+cleanTest: 
+	/bin/rm -f *.fs25s1
