@@ -10,9 +10,7 @@
 
 struct TreeNode {
 	int label;
-	Token token;
-	TreeNode *left;
-	TreeNode *middle;
-	TreeNode *right;
+	Token tokenArr[3];
+	TreeNode *nodeArr[3];
 };
 #endif

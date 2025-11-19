@@ -36,8 +36,8 @@ enum NonTerminals {
 	EXP,
 	M,
 	N,
-	R
-}
+	R,
+};
 
 
 void Parser::parse() {
@@ -58,10 +58,12 @@ void Parser::parse() {
 void Parser::program() {
 	TreeNode *programNode = new TreeNode;
 	programNode->label = PROGRAM;
-	programNode->token = tk;
-	programNode->left = nullptr;
-	programNode->middle = nullptr;
-	programNode->right = nullptr;
+	programNode->tokenArr[0] = tk;
+	programNode->tokenArr[1] = tk;
+	programNode->tokenArr[2] = tk;
+	programNode->nodeArr[0] = nullptr;
+	programNode->nodeArr[1] = nullptr;
+	programNode->nodeArr[2] = nullptr;
 
 
 	if (tk.tokenID == KEYWORD) {
@@ -74,8 +76,8 @@ void Parser::program() {
 	} else {
 		errorHandler(tokenNames[KEYWORD - 1000]);
 	}
-	programNode->left = vars();
-	programNode->middle = block();
+	programNode->nodeArr[0] = vars();
+	programNode->nodeArr[1] = block();
 	if(tk.tokenID == KEYWORD) {
 		if (strcmp(tk.lexeme, "exit") == 0) {
 			tk = scanner.scanToken();
@@ -98,30 +100,26 @@ void Parser::program() {
 //
 //struct TreeNode {
 //	int label;
-//	Token token;
-//	TreeNode *left;
-//	TreeNode *middle;
-//	TreeNode *right;
+//	Token tokenArr[3];
+//	TreeNode *nodeArr[3];
 //};
-//struct Token {
-//	TokenID tokenID;
-//	char lexeme[9];
-//	int lineNum;
-//};
-
 
 
 void Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 	TreeNode varsNode = new TreeNode;
 	varsNode->label = VARS;
-	varsNode->token = tk;
-	varsNode->left = nullptr;
-	varsNode->middle = nullptr;
-	varsNode->right = nullptr;
+	varsNode->tokenArr[0] = tk;
+	varsNode->tokenArr[1] = tk;
+	varsNode->tokenArr[2] = tk;
+	varsNode->nodeArr[0] = nullptr;
+	varsNode->nodeArr[1] = nullptr;
+	varsNode->nodeArr[2] = nullptr;
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "int") == 0) {
 			tk = scanner.scanToken();
 			if(tk.tokenID == IDTK) {
+				varsNode->tokenArr[0] = tk
 				tk = scanner.scanToken();
 			} else {
 				errorHandler(tokenNames[IDTK - 1000]);
@@ -133,14 +131,16 @@ void Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 				errorHandler(tokenNames[ASSIGNOPTK - 1000]);
 			}
 			if(tk.tokenID == NUMTK) {
+				varsNode->tokenArr[1] = tk;
 				tk = scanner.scanToken();
 			}
 			else {
 				errorHandler(tokenNames[NUMTK - 1000]);
 			}
-			varsNode->left = varList();
+			varsNode->nodeArr[0] = varList();
 			if(tk.tokenID == DELOPTK) {
 				tk = scanner.scanToken();
+				return;
 			}
 			else {
 				errorHandler(tokenNames[DELOPTK - 1000]);
@@ -152,23 +152,27 @@ void Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 }
 
 void Parser::varList() {
+	TreeNode varsListNode = new TreeNode;
 	varListNode->label = VARLIST;
-	varListNode->token = tk;
-	varListNode->left = nullptr;
-	varListNode->middle = nullptr;
-	varListNode->right = nullptr;
+	varListNode->tokenArr[0] = tk;
+	varListNode->tokenArr[1] = tk;
+	varListNode->tokenArr[2] = tk;
+	varListNode->nodeArr[0] = nullptr;
+	varListNode->nodeArr[1] = nullptr;
+	varListNode->nodeArr[2] = nullptr;
 
 	if(tk.tokenID == IDTK) {
+		varListNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
-
 		if(tk.tokenID == ASSIGNOPTK) {
 			tk = scanner.scanToken();
 		} else {
 			errorHandler(tokenNames[ASSIGNOPTK - 1000]);
 		}
 		if(tk.tokenID == NUMTK) {
+			varListNode->tokenArr[1] = tk;
 			tk = scanner.scanToken();
-			varListNode->left = varList();
+			varListNode->nodeArr[0] = varList();
 			return;
 		} else {
 			errorHandler(tokenNames[NUMTK - 1000]);
@@ -179,16 +183,19 @@ void Parser::varList() {
 }
 
 void Parser::block() {
+	TreeNode blockNode = new TreeNode;
 	blockNode->label = BLOCK;
-	blockNode->token = tk;
-	blockNode->left = nullptr;
-	blockNode->middle = nullptr;
-	blockNode->right = nullptr;
+	blockNode->tokenArr[0] = tk;
+	blockNode->tokenArr[1] = tk;
+	blockNode->tokenArr[2] = tk;
+	blockNode->nodeArr[0] = nullptr;
+	blockNode->nodeArr[1] = nullptr;
+	blockNode->nodeArr[2] = nullptr;
 
 	if (tk.tokenID == LFTCURLYDELIM) {
 		tk = scanner.scanToken();
-		blockNode->left = vars();
-		blockNOde->middle = stats();
+		blockNode->nodeArr[0] = vars();
+		blockNode->nodeArr[1] = stats();
 		if(tk.tokenID == RGHTCURLYDELIM) {
 			tk = scanner.scanToken();
 		} else {
@@ -200,22 +207,28 @@ void Parser::block() {
 }
 
 void Parser::stats() {
+	TreeNode statsNode = new TreeNode;
 	statsNode->label = STATS;
-	statsNode->token = tk;
-	statsNode->left = nullptr;
-	statsNode->middle = nullptr;
-	statsNode->right = nullptr;
+	statsNode->tokenArr[0] = tk;
+	statsNode->tokenArr[1] = tk;
+	statsNode->tokenArr[2] = tk;
+	statsNode->nodeArr[0] = nullptr;
+	statsNode->nodeArr[1] = nullptr;
+	statsNode->nodeArr[2] = nullptr;
 
-	statsNode->left = stat();
-	statsNode->middle = mStat();
+	statsNode->nodeArr[0] = stat();
+	statsNode->nodeArr[1] = mStat();
 }
 
 void Parser::mStat() {
+	TreeNode mStatNode = new TreeNode;
 	mStatNode->label = MSTAT;
-	mStatNode->token = tk;
-	mStatNode->left = nullptr;
-	mStatNode->middle = nullptr;
-	mStatNode->right = nullptr;
+	mStatNode->tokenArr[0] = tk;
+	mStatNode->tokenArr[1] = tk;
+	mStatNode->tokenArr[2] = tk;
+	mStatNode->nodeArr[0] = nullptr;
+	mStatNode->nodeArr[1] = nullptr;
+	mStatNode->nodeArr[2] = nullptr;
 
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "scan") == 0 ||
@@ -225,13 +238,13 @@ void Parser::mStat() {
 			strcmp(tk.lexeme, "set") == 0) {
 			
 
-			mStatNode->left = stat();
-			mStatNode->middle = mStat();
+			mStatNode->nodeArr[0] = stat();
+			mStatNode->nodeArr[1] = mStat();
 			return;
 		}
 	} else if(tk.tokenID == LFTCURLYDELIM) {
-		mStatNode->left = stat();
-		mStatNode->middle = mStat();
+		mStatNode->nodeArr[0] = stat();
+		mStatNode->nodeArr[1] = mStat();
 		return;
 	}
 
@@ -240,27 +253,30 @@ void Parser::mStat() {
 }
 
 void Parser::stat() {
+	TreeNode statNode = new TreeNode;
 	statNode->label = STAT;
-	statNode->token = tk;
-	statNode->left = nullptr;
-	statNode->middle = nullptr;
-	statNode->right = nullptr;
+	statNode->tokenArr[0] = tk;
+	statNode->tokenArr[1] = tk;
+	statNode->tokenArr[2] = tk;
+	statNode->nodeArr[0] = nullptr;
+	statNode->nodeArr[1] = nullptr;
+	statNode->nodeArr[2] = nullptr;
 
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "scan") == 0) {
-			statNode->left = read();
+			statNode->nodeArr[0] = read();
 			return;
 		} else if(strcmp(tk.lexeme, "output") == 0) {
-			statNode->left = print();
+			statNode->nodeArr[0] = print();
 			return;
 		} else if(strcmp(tk.lexeme, "cond") == 0) {
-			statNode->left = cond();
+			statNode->nodeArr[0] = cond();
 			return;
 		} else if(strcmp(tk.lexeme, "loop") == 0) {
-			statNode->left = loop();
+			statNode->nodeArr[0] = loop();
 			return;
 		} else if(strcmp(tk.lexeme, "set") == 0) {
-			statNode->left = assign();
+			statNode->nodeArr[0] = assign();
 			return;
 		} else {
 			errorHandler("scan, output, cond, loop or set");
@@ -268,7 +284,7 @@ void Parser::stat() {
 			
 	} 
 	else if(tk.tokenID == LFTCURLYDELIM) {
-		statNode->left = block();
+		statNode->nodeArr[0] = block();
 		return;
 	}
 	else {
@@ -279,11 +295,14 @@ void Parser::stat() {
 }
 
 void Parser::read() {
+	TreeNode readNode = new TreeNode;
 	readNode->label = READ;
-	readNode->token = tk;
-	readNode->left = nullptr;
-	readNode->middle = nullptr;
-	readNode->right = nullptr;
+	readNode->tokenArr[0] = tk;
+	readNode->tokenArr[1] = tk;
+	readNode->tokenArr[2] = tk;
+	readNode->nodeArr[0] = nullptr;
+	readNode->nodeArr[1] = nullptr;
+	readNode->nodeArr[2] = nullptr;
 
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "scan") == 0) {
@@ -292,6 +311,7 @@ void Parser::read() {
 			errorHandler("scan");
 		}
 		if(tk.tokenID == IDTK) {
+			readNode->tokenArr[0] = tk;
 			tk = scanner.scanToken();
 
 		} else {
@@ -313,10 +333,20 @@ void Parser::read() {
 
 
 void Parser::print() {
+	TreeNode printNode = new TreeNode;
+	printNode->label = PRINT;
+	printNode->tokenArr[0] = tk;
+	printNode->tokenArr[1] = tk;
+	printNode->tokenArr[2] = tk;
+	printNode->nodeArr[0] = nullptr;
+	printNode->nodeArr[1] = nullptr;
+	printNode->nodeArr[2] = nullptr;
+
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "output") == 0) {
 			tk = scanner.scanToken();
-			exp();
+			printNode->nodeArr[0] = exp();
 
 		}
 		else {
@@ -336,6 +366,16 @@ void Parser::print() {
 
 
 void Parser::cond() {
+	TreeNode condNode = new TreeNode;
+	condNode->label = COND;
+	condNode->tokenArr[0] = tk;
+	condNode->tokenArr[1] = tk;
+	condNode->tokenArr[2] = tk;
+	condNode->nodeArr[0] = nullptr;
+	condNode->nodeArr[1] = nullptr;
+	condNode->nodeArr[2] = nullptr;
+
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "cond") == 0) {
 			tk = scanner.scanToken();
@@ -354,16 +394,17 @@ void Parser::cond() {
 	}
 
 	if(tk.tokenID == IDTK) {
+		condNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
-		relational();
-		exp();
+		condNode->nodeArr[0] = relational();
+		condNode->nodeArr[1] = exp();
 	} else {
 		errorHandler(tokenNames[IDTK - 1000]);
 	}
 
 	if(tk.tokenID == RGHTSQREDELIM) {
 		tk = scanner.scanToken();
-		stat();
+		condNode->nodeArr[2] = stat();
 		return;
 	} else {
 		errorHandler(tokenNames[RGHTSQREDELIM - 1000]);
@@ -375,6 +416,16 @@ void Parser::cond() {
 
 
 void Parser::loop() {
+	TreeNode loopNode = new TreeNode;
+	loopNode->label = LOOP;
+	loopNode->tokenArr[0] = tk;
+	loopNode->tokenArr[1] = tk;
+	loopNode->tokenArr[2] = tk;
+	loopNode->nodeArr[0] = nullptr;
+	loopNode->nodeArr[1] = nullptr;
+	loopNode->nodeArr[2] = nullptr;
+
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "loop") == 0) {
 			tk = scanner.scanToken();
@@ -390,15 +441,16 @@ void Parser::loop() {
 		errorHandler(tokenNames[LFTSQREDELIM - 1000]);
 	}
 	if(tk.tokenID == IDTK) {
+		loopNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
-		relational();
-		exp();
+		loopNode->nodeArr[0] = relational();
+		loopNode->nodeArr[1] = exp();
 	} else {
 		errorHandler(tokenNames[IDTK - 1000]);
 	}
 	if(tk.tokenID == RGHTSQREDELIM) {
 		tk = scanner.scanToken();
-		stat();
+		loopNode->nodeArr[2] = stat();
 		return;
 	} else {
 		errorHandler(tokenNames[RGHTSQREDELIM - 1000]);
@@ -410,6 +462,16 @@ void Parser::loop() {
 
 
 void Parser::assign() {
+	TreeNode assignNode = new TreeNode;
+	assignNode->label = ASSIGN;
+	assignNode->tokenArr[0] = tk;
+	assignNode->tokenArr[1] = tk;
+	assignNode->tokenArr[2] = tk;
+	assignNode->nodeArr[0] = nullptr;
+	assignNode->nodeArr[1] = nullptr;
+	assignNode->nodeArr[2] = nullptr;
+
+
 	if(tk.tokenID == KEYWORD) {
 		if(strcmp(tk.lexeme, "set") == 0) {
 			tk = scanner.scanToken();
@@ -422,6 +484,7 @@ void Parser::assign() {
 	}
 
 	if(tk.tokenID = IDTK) {
+		assignNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 	} else {
 			errorHandler(tokenNames[IDTK - 1000]);
@@ -429,7 +492,7 @@ void Parser::assign() {
 
 	if(tk.tokenID = ASSIGNOPTK) {
 		tk = scanner.scanToken();
-		exp();
+		assignNode->nodeArr[0] = exp();
 	} else {
 		errorHandler(tokenNames[ASSIGNOPTK - 1000]);
 	}
@@ -445,19 +508,33 @@ void Parser::assign() {
 }
 
 void Parser::relational() {
+	TreeNode relationalNode = new TreeNode;
+	relationalNode->label = RELATIONAL;
+	relationalNode->tokenArr[0] = tk;
+	relationalNode->tokenArr[1] = tk;
+	relationalNode->tokenArr[2] = tk;
+	relationalNode->nodeArr[0] = nullptr;
+	relationalNode->nodeArr[1] = nullptr;
+	relationalNode->nodeArr[2] = nullptr;
+
+
 	if(tk.tokenID == LEOPTK) {
+		relationalNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 		return;
 	} else if(tk.tokenID == GEOPTK) {
+		relationalNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 		return;
 	} else if(tk.tokenID == LTOPTK) {
+		relationalNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 		return;
 	} else if(tk.tokenID == EQOPTK) {
+		relationalNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 		return;
-	} else if(tk.tokenID == ASSIGNOPTK) {
+	} else if(tk.tokenID == ASSIGNOPTK) {		//SHOULD I ADD THE TOKEN TO THE NODE HERE????
 		tk = scanner.scanToken();
 
 		if(tk.tokenID == ASSIGNOPTK) {
@@ -472,73 +549,120 @@ void Parser::relational() {
 }
 
 void Parser::exp() {
-	m();
+	TreeNode expNode = new TreeNode;
+	expNode->label = EXP;
+	expNode->tokenArr[0] = tk;
+	expNode->tokenArr[1] = tk;
+	expNode->tokenArr[2] = tk;
+	expNode->nodeArr[0] = nullptr;
+	expNode->nodeArr[1] = nullptr;
+	expNode->nodeArr[2] = nullptr;
+
+
+	expNode->nodeArr[0] = m();
 	if(tk.tokenID == DBLESTAR) {
-		printf("EXP: took M ** <EXP> Opt\n");
+		//printf("EXP: took M ** <EXP> Opt\n");
+		expNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
-		exp();
+		expNode->nodeArr[1] = exp();
 		return;
 	} else if (tk.tokenID == DBLESLASH) {
-		printf("EXP: took M // <EXP> Opt\n");
+		expNode->tokenArr[0] = tk;
+		//printf("EXP: took M // <EXP> Opt\n");
 		tk = scanner.scanToken();
-		exp();
+		expNode->nodeArr[1] = exp();
 		return;
 	} else {
-		printf("EXP: took <M> opt\n");
+		//printf("EXP: took <M> opt\n");
 		return;
 	}
 }
 
 
 void Parser::m() {
-	n();
-	printf("M: n just ran\n");
+	TreeNode mNode = new TreeNode;
+	mNode->label = M;
+	mNode->tokenArr[0] = tk;
+	mNode->tokenArr[1] = tk;
+	mNode->tokenArr[2] = tk;
+	mNode->nodeArr[0] = nullptr;
+	mNode->nodeArr[1] = nullptr;
+	mNode->nodeArr[2] = nullptr;
+
+
+	mNode->nodeArr[0] = n();
+	//printf("M: n just ran\n");
 	if(tk.tokenID == OPTK) {
 		if(strcmp(tk.lexeme, "+") == 0) {
-			printf("M: N+M opt took\n");
+			//printf("M: N+M opt took\n");
+			mNode->tokenArr[0] = tk;
 			tk = scanner.scanToken();
-			m();
+			mNode->nodeArr[1] = m();
 			return;
 		} else {
 			return; // In case M -> N opt
 		}
 	} else {
-		printf("M: Took the Lone N Opt\n");
+		//printf("M: Took the Lone N Opt\n");
 		return;
 	}
 }
 
 
 void Parser::n() {
+	TreeNode nNode = new TreeNode;
+	nNode->label = N;
+	nNode->tokenArr[0] = tk;
+	nNode->tokenArr[1] = tk;
+	nNode->tokenArr[2] = tk;
+	nNode->nodeArr[0] = nullptr;
+	nNode->nodeArr[1] = nullptr;
+	nNode->nodeArr[2] = nullptr;
+
+
 	if(tk.tokenID == OPTK) {
 		if(strcmp(tk.lexeme, "-") == 0) {
-			printf("N: took -N opt\n");
+			//printf("N: took -N opt\n");
+			nNode->tokenArr[0] = tk;
 			tk = scanner.scanToken();
-			n();
+			nNode->nodeArr[0] = n();
 			return;
 		}	
 	}
-	r();
-	printf("N: Just ran R\n");
+
+	nNode->nodeArr[0] = r();
+	//printf("N: Just ran R\n");
+	
 	if(tk.tokenID == OPTK) {
 		if(strcmp(tk.lexeme, "-") == 0) {
-			printf("N: took R-N Opt\n");
+			//printf("N: took R-N Opt\n");
+			nNode->tokenArr[0] = tk;
 			tk = scanner.scanToken();
-			n();
+			nNode->nodeArr[1] = n();
 		} else {
 			return; // In case N -> R option
 		}
 	} else {
-		printf("N: Took Lone R Opt\n");
+		//printf("N: Took Lone R Opt\n");
 		return; // In case N -> R option
 	}
 	
 }
 
 void Parser::r() {
+	TreeNode rNode = new TreeNode;
+	rNode->label = R;
+	rNode->tokenArr[0] = tk;
+	rNode->tokenArr[1] = tk;
+	rNode->tokenArr[2] = tk;
+	rNode->nodeArr[0] = nullptr;
+	rNode->nodeArr[1] = nullptr;
+	rNode->nodeArr[2] = nullptr;
+
+
 	if(tk.tokenID == LFTPARENDELIM) {
 		tk = scanner.scanToken();
-		exp();
+		rNode->nodeArr[0] = exp();
 		if(tk.tokenID == RGHTPARENDELIM) {
 			tk = scanner.scanToken();
 			return;
@@ -546,11 +670,13 @@ void Parser::r() {
 			errorHandler(tokenNames[RGHTPARENDELIM - 1000]);
 		}
 	} else if(tk.tokenID == IDTK) {
-		printf("R: took ID opt\n");
+		//printf("R: took ID opt\n");
+		rNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 		return;
 	} else if(tk.tokenID == NUMTK) {
-		printf("R: took NumOpt\n");
+		//printf("R: took NumOpt\n");
+		rNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 		return;
 	} else {
