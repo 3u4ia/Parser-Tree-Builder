@@ -32,9 +32,7 @@ class Tree {
 				baseFileName = fileName; // Allocating new memory and copying the contents of the str
 			}
 			
-			fileInitHelper(&inOrderFile, ".inorder");
 			fileInitHelper(&preOrderFile, ".preorder");
-			fileInitHelper(&postOrderFile, ".postorder");
 		}
 		Tree(TreeNode *root) {
 			

@@ -17,7 +17,7 @@
 //	TreeNode *middle;
 //	TreeNode *right;
 //};
-
+static const Token initTk = {OPTK, "", -1};
 
 enum NonTerminals {
 	PROGRAM,
@@ -57,10 +57,11 @@ void Parser::parse() {
 
 TreeNode* Parser::program() {
 	TreeNode *programNode = new TreeNode;
+	Token initTk = {OPTK, "", -1};
 	programNode->label = PROGRAM;
-	programNode->tokenArr[0] = tk;
-	programNode->tokenArr[1] = tk;
-	programNode->tokenArr[2] = tk;
+	programNode->tokenArr[0] = initTk;
+	programNode->tokenArr[1] = initTk;
+	programNode->tokenArr[2] = initTk;
 	programNode->nodeArr[0] = nullptr;
 	programNode->nodeArr[1] = nullptr;
 	programNode->nodeArr[2] = nullptr;
@@ -108,9 +109,9 @@ TreeNode* Parser::program() {
 TreeNode* Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 	TreeNode *varsNode = new TreeNode;
 	varsNode->label = VARS;
-	varsNode->tokenArr[0] = tk;
-	varsNode->tokenArr[1] = tk;
-	varsNode->tokenArr[2] = tk;
+	varsNode->tokenArr[0] = initTk;
+	varsNode->tokenArr[1] = initTk;
+	varsNode->tokenArr[2] = initTk;
 	varsNode->nodeArr[0] = nullptr;
 	varsNode->nodeArr[1] = nullptr;
 	varsNode->nodeArr[2] = nullptr;
@@ -154,9 +155,9 @@ TreeNode* Parser::vars() { // LIKELY INCORRECT DUE TO NOT BEING DEEPLY NESTED
 TreeNode* Parser::varList() {
 	TreeNode *varListNode = new TreeNode;
 	varListNode->label = VARLIST;
-	varListNode->tokenArr[0] = tk;
-	varListNode->tokenArr[1] = tk;
-	varListNode->tokenArr[2] = tk;
+	varListNode->tokenArr[0] = initTk;
+	varListNode->tokenArr[1] = initTk;
+	varListNode->tokenArr[2] = initTk;
 	varListNode->nodeArr[0] = nullptr;
 	varListNode->nodeArr[1] = nullptr;
 	varListNode->nodeArr[2] = nullptr;
@@ -185,9 +186,9 @@ TreeNode* Parser::varList() {
 TreeNode* Parser::block() {
 	TreeNode *blockNode = new TreeNode;
 	blockNode->label = BLOCK;
-	blockNode->tokenArr[0] = tk;
-	blockNode->tokenArr[1] = tk;
-	blockNode->tokenArr[2] = tk;
+	blockNode->tokenArr[0] = initTk;
+	blockNode->tokenArr[1] = initTk;
+	blockNode->tokenArr[2] = initTk;
 	blockNode->nodeArr[0] = nullptr;
 	blockNode->nodeArr[1] = nullptr;
 	blockNode->nodeArr[2] = nullptr;
@@ -210,9 +211,9 @@ TreeNode* Parser::block() {
 TreeNode* Parser::stats() {
 	TreeNode *statsNode = new TreeNode;
 	statsNode->label = STATS;
-	statsNode->tokenArr[0] = tk;
-	statsNode->tokenArr[1] = tk;
-	statsNode->tokenArr[2] = tk;
+	statsNode->tokenArr[0] = initTk;
+	statsNode->tokenArr[1] = initTk;
+	statsNode->tokenArr[2] = initTk;
 	statsNode->nodeArr[0] = nullptr;
 	statsNode->nodeArr[1] = nullptr;
 	statsNode->nodeArr[2] = nullptr;
@@ -225,9 +226,9 @@ TreeNode* Parser::stats() {
 TreeNode* Parser::mStat() {
 	TreeNode *mStatNode = new TreeNode;
 	mStatNode->label = MSTAT;
-	mStatNode->tokenArr[0] = tk;
-	mStatNode->tokenArr[1] = tk;
-	mStatNode->tokenArr[2] = tk;
+	mStatNode->tokenArr[0] = initTk;
+	mStatNode->tokenArr[1] = initTk;
+	mStatNode->tokenArr[2] = initTk;
 	mStatNode->nodeArr[0] = nullptr;
 	mStatNode->nodeArr[1] = nullptr;
 	mStatNode->nodeArr[2] = nullptr;
@@ -257,9 +258,9 @@ TreeNode* Parser::mStat() {
 TreeNode* Parser::stat() {
 	TreeNode *statNode = new TreeNode;
 	statNode->label = STAT;
-	statNode->tokenArr[0] = tk;
-	statNode->tokenArr[1] = tk;
-	statNode->tokenArr[2] = tk;
+	statNode->tokenArr[0] = initTk;
+	statNode->tokenArr[1] = initTk;
+	statNode->tokenArr[2] = initTk;
 	statNode->nodeArr[0] = nullptr;
 	statNode->nodeArr[1] = nullptr;
 	statNode->nodeArr[2] = nullptr;
@@ -299,9 +300,9 @@ TreeNode* Parser::stat() {
 TreeNode* Parser::read() {
 	TreeNode *readNode = new TreeNode;
 	readNode->label = READ;
-	readNode->tokenArr[0] = tk;
-	readNode->tokenArr[1] = tk;
-	readNode->tokenArr[2] = tk;
+	readNode->tokenArr[0] = initTk;
+	readNode->tokenArr[1] = initTk;
+	readNode->tokenArr[2] = initTk;
 	readNode->nodeArr[0] = nullptr;
 	readNode->nodeArr[1] = nullptr;
 	readNode->nodeArr[2] = nullptr;
@@ -337,9 +338,9 @@ TreeNode* Parser::read() {
 TreeNode* Parser::print() {
 	TreeNode *printNode = new TreeNode;
 	printNode->label = PRINT;
-	printNode->tokenArr[0] = tk;
-	printNode->tokenArr[1] = tk;
-	printNode->tokenArr[2] = tk;
+	printNode->tokenArr[0] = initTk;
+	printNode->tokenArr[1] = initTk;
+	printNode->tokenArr[2] = initTk;
 	printNode->nodeArr[0] = nullptr;
 	printNode->nodeArr[1] = nullptr;
 	printNode->nodeArr[2] = nullptr;
@@ -370,9 +371,9 @@ TreeNode* Parser::print() {
 TreeNode* Parser::cond() {
 	TreeNode *condNode = new TreeNode;
 	condNode->label = COND;
-	condNode->tokenArr[0] = tk;
-	condNode->tokenArr[1] = tk;
-	condNode->tokenArr[2] = tk;
+	condNode->tokenArr[0] = initTk;
+	condNode->tokenArr[1] = initTk;
+	condNode->tokenArr[2] = initTk;
 	condNode->nodeArr[0] = nullptr;
 	condNode->nodeArr[1] = nullptr;
 	condNode->nodeArr[2] = nullptr;
@@ -420,9 +421,9 @@ TreeNode* Parser::cond() {
 TreeNode* Parser::loop() {
 	TreeNode *loopNode = new TreeNode;
 	loopNode->label = LOOP;
-	loopNode->tokenArr[0] = tk;
-	loopNode->tokenArr[1] = tk;
-	loopNode->tokenArr[2] = tk;
+	loopNode->tokenArr[0] = initTk;
+	loopNode->tokenArr[1] = initTk;
+	loopNode->tokenArr[2] = initTk;
 	loopNode->nodeArr[0] = nullptr;
 	loopNode->nodeArr[1] = nullptr;
 	loopNode->nodeArr[2] = nullptr;
@@ -466,9 +467,9 @@ TreeNode* Parser::loop() {
 TreeNode* Parser::assign() {
 	TreeNode *assignNode = new TreeNode;
 	assignNode->label = ASSIGN;
-	assignNode->tokenArr[0] = tk;
-	assignNode->tokenArr[1] = tk;
-	assignNode->tokenArr[2] = tk;
+	assignNode->tokenArr[0] = initTk;
+	assignNode->tokenArr[1] = initTk;
+	assignNode->tokenArr[2] = initTk;
 	assignNode->nodeArr[0] = nullptr;
 	assignNode->nodeArr[1] = nullptr;
 	assignNode->nodeArr[2] = nullptr;
@@ -512,9 +513,9 @@ TreeNode* Parser::assign() {
 TreeNode* Parser::relational() {
 	TreeNode *relationalNode = new TreeNode;
 	relationalNode->label = RELATIONAL;
-	relationalNode->tokenArr[0] = tk;
-	relationalNode->tokenArr[1] = tk;
-	relationalNode->tokenArr[2] = tk;
+	relationalNode->tokenArr[0] = initTk;
+	relationalNode->tokenArr[1] = initTk;
+	relationalNode->tokenArr[2] = initTk;
 	relationalNode->nodeArr[0] = nullptr;
 	relationalNode->nodeArr[1] = nullptr;
 	relationalNode->nodeArr[2] = nullptr;
@@ -553,9 +554,9 @@ TreeNode* Parser::relational() {
 TreeNode* Parser::exp() {
 	TreeNode *expNode = new TreeNode;
 	expNode->label = EXP;
-	expNode->tokenArr[0] = tk;
-	expNode->tokenArr[1] = tk;
-	expNode->tokenArr[2] = tk;
+	expNode->tokenArr[0] = initTk;
+	expNode->tokenArr[1] = initTk;
+	expNode->tokenArr[2] = initTk;
 	expNode->nodeArr[0] = nullptr;
 	expNode->nodeArr[1] = nullptr;
 	expNode->nodeArr[2] = nullptr;
@@ -584,9 +585,9 @@ TreeNode* Parser::exp() {
 TreeNode* Parser::m() {
 	TreeNode *mNode = new TreeNode;
 	mNode->label = M;
-	mNode->tokenArr[0] = tk;
-	mNode->tokenArr[1] = tk;
-	mNode->tokenArr[2] = tk;
+	mNode->tokenArr[0] = initTk;
+	mNode->tokenArr[1] = initTk;
+	mNode->tokenArr[2] = initTk;
 	mNode->nodeArr[0] = nullptr;
 	mNode->nodeArr[1] = nullptr;
 	mNode->nodeArr[2] = nullptr;
@@ -614,9 +615,9 @@ TreeNode* Parser::m() {
 TreeNode* Parser::n() {
 	TreeNode *nNode = new TreeNode;
 	nNode->label = N;
-	nNode->tokenArr[0] = tk;
-	nNode->tokenArr[1] = tk;
-	nNode->tokenArr[2] = tk;
+	nNode->tokenArr[0] = initTk;
+	nNode->tokenArr[1] = initTk;
+	nNode->tokenArr[2] = initTk;
 	nNode->nodeArr[0] = nullptr;
 	nNode->nodeArr[1] = nullptr;
 	nNode->nodeArr[2] = nullptr;
@@ -655,9 +656,9 @@ TreeNode* Parser::n() {
 TreeNode* Parser::r() {
 	TreeNode *rNode = new TreeNode;
 	rNode->label = R;
-	rNode->tokenArr[0] = tk;
-	rNode->tokenArr[1] = tk;
-	rNode->tokenArr[2] = tk;
+	rNode->tokenArr[0] = initTk;
+	rNode->tokenArr[1] = initTk;
+	rNode->tokenArr[2] = initTk;
 	rNode->nodeArr[0] = nullptr;
 	rNode->nodeArr[1] = nullptr;
 	rNode->nodeArr[2] = nullptr;
