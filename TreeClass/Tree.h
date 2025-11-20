@@ -1,7 +1,8 @@
 #ifndef TREE_H
 #define TREE_H
-#include "../IntermediateStruct.h"
 #include "TreeNodeStruct.h"
+#include "../TokensAndStates/TokensAndStates.h" // May cause circular dependencies
+
 #include <stdio.h>
 #include <vector>
 #include <stdlib.h>
@@ -12,19 +13,15 @@ class Tree {
 		TreeNode *root;
 
 		char *baseFileName;
-		FILE *inOrderFile = NULL;
 		FILE *preOrderFile = NULL;
-		FILE *postOrderFile = NULL;
 
-		void insert(TreeNode *&, TreeNode *&);
-
-		void displayInOrder(TreeNode *, size_t) const;
-		void displayPreOrder(TreeNode *, size_t) const;
-		void displayPostOrder(TreeNode *, size_t) const;
+		void displayPreOrder(TreeNode *, int) const;
 		void fileInitHelper(FILE **, const char *);
 		
 	public:
 		Tree(char *fileName) {
+			printf("hello?\n");
+			printf("something new\n");
 			root = nullptr;
 			if(fileName == nullptr){
 				baseFileName = "out";
@@ -32,39 +29,37 @@ class Tree {
 				baseFileName = fileName; // Allocating new memory and copying the contents of the str
 			}
 			
-			fileInitHelper(&inOrderFile, ".inorder");
 			fileInitHelper(&preOrderFile, ".preorder");
-			fileInitHelper(&postOrderFile, ".postorder");
 		}
-		Tree(TreeNode *root) {
-			
+		Tree(char *fileName, TreeNode *root) {
+			printf("First line in Tree(fileName, root)\n");
+			printf("Filename Tree Class received: %s\n", fileName);
+			printf("This should re run make\n");
+			this->root = root;
+			if(fileName == nullptr) {
+				baseFileName = "out";
+			} else {
+				baseFileName = fileName;
+			}
+			printf("Before fileInitHelper runs\n");
+			fileInitHelper(&preOrderFile, ".preorder");
+			printf("AFter fileInitHelper runs\n");
 		}
 		~Tree() {
-			if(inOrderFile) {
-				fclose(inOrderFile);
-			}
 			if(preOrderFile) {
 				fclose(preOrderFile);
 			}
-			if(postOrderFile) {
-				fclose(postOrderFile);
+			cleanTree(root);
+		}
+		void cleanTree(TreeNode *node) {
+			if (node == nullptr) return;
+			for(int i = 0; i < 3; i++) {
+				cleanTree(node->nodeArr[i]);
 			}
-
+			delete node;
 		}
 
-		void insertNode(IntermediateRep);
-		void buildTree(std::vector<IntermediateRep>);
-
-		void displayInOrder()const { // overload
-			displayInOrder(root, 0); // helper function essentially that calls displayInOrder
-		}
-		void displayPreOrder()const {
-			displayPreOrder(root, 0);
-		}
-		void displayPostOrder()const {
-			displayPostOrder(root, 0);
-		}
-
+		void displayPreOrder() const;
 
 
 		

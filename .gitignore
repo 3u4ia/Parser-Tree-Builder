@@ -1,4 +1,5 @@
 *.o
+*.fs25s1
 P2
 someFile.fs25s1
 *.inorder
