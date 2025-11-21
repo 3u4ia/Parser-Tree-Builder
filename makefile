@@ -37,7 +37,7 @@ $(OBJS3): TokensAndStates/TokensAndStates.cpp TokensAndStates/TokensAndStates.h
 $(OBJS4): $(PRSRCLASS)/Parser.cpp $(PRSRCLASS)/Parser.h TokensAndStates/TokensAndStates.h $(CLSFLDR)/Scanner.h $(TREECLS)/TreeNodeStruct.h $(TREECLS)/Tree.h
 	$(CC) $(CFLAGS) -c $(PRSRCLASS)/Parser.cpp -o $(PRSRCLASS)/$(OBJS4)
 
-$(OBJS5): $(TREECLS)/Tree.cpp $(TREECLS)/Tree.h $(TREECLS)/TreeNodeStruct.h
+$(OBJS5): $(TREECLS)/Tree.cpp $(TREECLS)/Tree.h $(TREECLS)/TreeNodeStruct.h TokensAndStates/TokensAndStates.h
 	$(CC) $(CFLAGS) -c $(TREECLS)/Tree.cpp -o $(TREECLS)/$(OBJS5)
 
 clean:

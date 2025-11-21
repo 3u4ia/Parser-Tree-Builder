@@ -1,6 +1,7 @@
 #ifndef TREE_H
 #define TREE_H
 #include "TreeNodeStruct.h"
+#include "../TokensAndStates/TokensAndStates.h"
 #include <stdio.h>
 #include <vector>
 #include <stdlib.h>

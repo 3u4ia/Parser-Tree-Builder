@@ -16,7 +16,6 @@ class Scanner {
 		char *lookaheadPlace;
 		static const int NUMOFSTATES = 13;
 		static const int NUMOFCOLUMNS = 10;
-
 		
 		void incrementCharPtr();
 		
