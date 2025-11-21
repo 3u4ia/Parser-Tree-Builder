@@ -12,7 +12,7 @@ void tokenize(char *, char**, int);
 
 
 int main(int argc, char* argv[]) {
-	char *input;
+	char *input = nullptr;
 	char textBuffer[1024] = "";
 	char extension[] = ".fs25s1";
 	bool didHaveArg = false;
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 	
 	}
 	
-	Parser parserObj(textBuffer);
+	Parser parserObj(input, textBuffer);
 	parserObj.parse();
 
 	

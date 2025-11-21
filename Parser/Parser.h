@@ -5,6 +5,7 @@
 #include "../TokensAndStates/TokensAndStates.h"
 #include "../TreeClass/TreeNodeStruct.h"
 #include "../ScannerClass/Scanner.h"
+#include "../TreeClass/Tree.h"
 
 
 using namespace std;
@@ -12,6 +13,7 @@ using namespace std;
 class Parser {
 	private:
 		Token tk;
+		char *fileName;
 		Scanner scanner;
 		TreeNode *program();
 		TreeNode *vars();
@@ -35,7 +37,7 @@ class Parser {
 		
 
 	public:
-		Parser(const char *textBuffer): scanner(textBuffer) {
+		Parser(char *fileName, const char *textBuffer): fileName(fileName), scanner(textBuffer) {
 		}
 
 		void parse();
