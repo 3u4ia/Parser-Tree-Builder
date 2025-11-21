@@ -34,8 +34,15 @@ class Tree {
 			
 			fileInitHelper(&preOrderFile, ".preorder");
 		}
-		Tree(TreeNode *root) {
-			
+		Tree(char *fileName, TreeNode *root) {
+			this->root = root;
+			if(fileName == nullptr) {
+				baseFileName = "out";
+			} else {
+				baseFileName = fileName;
+			}
+
+			fileInitHelper(&preOrderFile, ".preorder");
 		}
 		~Tree() {
 			if(inOrderFile) {

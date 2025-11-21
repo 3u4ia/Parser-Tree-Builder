@@ -538,9 +538,11 @@ TreeNode* Parser::relational() {
 		tk = scanner.scanToken();
 		return relationalNode;
 	} else if(tk.tokenID == ASSIGNOPTK) {		//SHOULD I ADD THE TOKEN TO THE NODE HERE????
+		relationalNode->tokenArr[0] = tk;
 		tk = scanner.scanToken();
 
 		if(tk.tokenID == ASSIGNOPTK) {
+			relationalNode->tokenArr[1] = tk;
 			tk = scanner.scanToken();
 			return relationalNode;
 		} else {
