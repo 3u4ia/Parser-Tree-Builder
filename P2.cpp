@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 	
 	}
 	
-	Parser parserObj(textBuffer);
+	Parser parserObj(fileName, textBuffer);
 	parserObj.parse();
 
 	

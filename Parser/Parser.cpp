@@ -42,9 +42,10 @@ enum NonTerminals {
 
 void Parser::parse() {
 	tk = scanner.scanToken();
-	program();
+	Tree treeObj(fileName, program());
+//	program();
 	if (tk.tokenID != EOFTK) {
-		printf("ERROR\n");
+		printf("ERROR EOF NOT REACHED\n");
 		exit(1);
 	}
 	else {
