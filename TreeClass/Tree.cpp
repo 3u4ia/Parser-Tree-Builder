@@ -20,7 +20,7 @@ void Tree::displayPreOrder(TreeNode *nodePtr, size_t depth) const {
 	if(nodePtr) {
 		for(size_t i = 0; i < depth * 2; i++) fprintf(preOrderFile, " ");
 		int tokenID = -1;
-		fprintf(preOrderFile, "%d", nodePtr->label);
+		fprintf(preOrderFile, "%s", nonTerminalNames[nodePtr->label]);
 		for(size_t i = 0; i < 3; i++) {
 			tokenID = nodePtr->tokenArr[i].tokenID;
 			if (nodePtr->tokenArr[i].lineNum != -1) {

@@ -19,31 +19,11 @@
 //};
 static const Token initTk = {OPTK, "", -1};
 
-enum NonTerminals {
-	PROGRAM,
-	VARS,
-	VARLIST,
-	BLOCK,
-	STATS,
-	MSTAT,
-	STAT,
-	READ,
-	PRINT,
-	COND,
-	LOOP,
-	ASSIGN,
-	RELATIONAL,
-	EXP,
-	M,
-	N,
-	R,
-};
 
 
 void Parser::parse() {
 	tk = scanner.scanToken();
 	Tree treeObj(fileName, program());
-	treeObj.displayPreOrder();
 	//program();
 	if (tk.tokenID != EOFTK) {
 		printf("ERROR EOF NOT REACHED\n");
@@ -52,6 +32,7 @@ void Parser::parse() {
 	else {
 		printf("Success!");
 	}
+	treeObj.displayPreOrder();
 	return;
 }
 

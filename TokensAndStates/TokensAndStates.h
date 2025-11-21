@@ -37,6 +37,28 @@ struct Token {
 
 extern const char *tokenNames[];
 
+enum NonTerminals {
+	PROGRAM,
+	VARS,
+	VARLIST,
+	BLOCK,
+	STATS,
+	MSTAT,
+	STAT,
+	READ,
+	PRINT,
+	COND,
+	LOOP,
+	ASSIGN,
+	RELATIONAL,
+	EXP,
+	M,
+	N,
+	R,
+};
+
+extern const char *nonTerminalNames[];
+
 enum States {
 	S1,
 	S2,
