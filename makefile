@@ -1,6 +1,6 @@
 CC = g++ -g3
 CFLAGS = -g3 -Wall
-TARGET = P2
+TARGET = parser
 
 OBJS1 = P2.o
 OBJS2 = Scanner.o
